@@ -26,7 +26,6 @@ private slots:
 private:
     Ui::EntrataView *ui;
     Conto *conto;
-    Transazione *pE;
 };
 
 #endif // RICARICA_H
