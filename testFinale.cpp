@@ -24,8 +24,8 @@ void testFinale::Test_calcolaSaldo(){
     QDate data = QDate::currentDate();
     int trans_1 = 10;
     int trans_2 = 5;
-    Transazione *prelievo = new Transazione(trans_2," ",data,Transazione::tipoTransazione::USCITA); //prelievo
-    Transazione *ricarica = new Transazione(trans_1," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica
+    Transazione prelievo(trans_2," ",data,Transazione::tipoTransazione::USCITA); //prelievo
+    Transazione ricarica(trans_1," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica
     conto->aggiungiTransazione(prelievo);
     conto->aggiungiTransazione(ricarica);
     float new_saldo = conto->calcolaSaldo();
@@ -35,8 +35,8 @@ void testFinale::Test_calcolaSaldo(){
 void testFinale::Test_aggiungiTransazione(){
     Conto *conto = new Conto(100);
     QDate data = QDate::currentDate();
-    Transazione *prelievo = new Transazione(100," ",data,Transazione::tipoTransazione::USCITA); //prelievo
-    Transazione *ricarica = new Transazione(50," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica
+    Transazione prelievo(100," ",data,Transazione::tipoTransazione::USCITA); //prelievo
+    Transazione ricarica(50," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica
     conto->aggiungiTransazione(prelievo);
     conto->aggiungiTransazione(ricarica);
     float new_saldo = conto->calcolaSaldo();
@@ -50,7 +50,7 @@ void testFinale::Test_aggiungiTransazione(){
     QCOMPARE(2,numeroTransazioni); // Il numero di transazioni rimane invariato
 
     // Tentativo di aggiungere una transazione in uscita(prelievo) di importo superiore al saldo disponibile
-    Transazione *prelievo_eccessivo = new Transazione(100," ",data,Transazione::tipoTransazione::USCITA);
+    Transazione prelievo_eccessivo(100," ",data,Transazione::tipoTransazione::USCITA);
     conto->aggiungiTransazione(prelievo_eccessivo);
     QCOMPARE(50,new_saldo);     // Il saldo rimane invariato
     QCOMPARE(2,numeroTransazioni); // Il numero di transazioni rimane invariato
@@ -72,8 +72,8 @@ void testFinale::Test_eliminaTransazione(){
     QCOMPARE(0,numeroTransazioni);
 
     // Vengono create due transazioni e aggiunte al vettore di transazioni del conto
-    Transazione *prelievo = new Transazione(100," ",data,Transazione::tipoTransazione::USCITA); //prelievo. ID=1
-    Transazione *ricarica = new Transazione(50," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica. ID=2
+    Transazione prelievo(100," ",data,Transazione::tipoTransazione::USCITA); //prelievo. ID=1
+    Transazione ricarica(50," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica. ID=2
     conto->aggiungiTransazione(prelievo);
     conto->aggiungiTransazione(ricarica);
 
@@ -95,28 +95,24 @@ void testFinale::Test_eliminaTransazione(){
 }
 
 void testFinale::Test_cercaTransazione(){
-    Transazione *transazioneCercata;
     Conto *conto = new Conto(0);
     QDate data = QDate::currentDate();
 
     //Primo caso: si cerca una transazione quando ancora il vettore delle transazioni è vuoto
-    transazioneCercata = conto->cercaTransazione(1);
-    QCOMPARE(nullptr,transazioneCercata);
+    Transazione transazioneCercata = conto->cercaTransazione(1);
+    QCOMPARE(Transazione::tipoTransazione::TRANSAZIONE_VUOTA,transazioneCercata.getTipo());
 
     // Vengono create due transazioni e aggiunte al vettore di transazioni del conto
-    Transazione *prelievo = new Transazione(0," ",data,Transazione::tipoTransazione::USCITA); //prelievo. ID=1
-    Transazione *ricarica = new Transazione(0," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica. ID=2
+    Transazione prelievo(0," ",data,Transazione::tipoTransazione::USCITA); //prelievo. ID=1
+    Transazione ricarica(0," ",data,Transazione::tipoTransazione::ENTRATA); //ricarica. ID=2
     conto->aggiungiTransazione(prelievo);
     conto->aggiungiTransazione(ricarica);
 
     //Secondo caso: si cerca una transazione con ID inesistente
     transazioneCercata = conto->cercaTransazione(3);
-    QCOMPARE(nullptr,transazioneCercata);
-
-    //Terzo caso: si cerca una transazione con ID esistente (quello di 'prelievo',con ID=1)
-    transazioneCercata = conto->cercaTransazione(1);
-    QCOMPARE(prelievo,transazioneCercata);
+    QCOMPARE(Transazione::tipoTransazione::TRANSAZIONE_VUOTA,transazioneCercata.getTipo());
 }
+
 
 
 QTEST_APPLESS_MAIN(testFinale)
