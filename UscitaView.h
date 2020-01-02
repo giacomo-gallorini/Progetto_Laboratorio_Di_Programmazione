@@ -26,7 +26,6 @@ private slots:
 private:
     Ui::UscitaView *ui;
     Conto *conto;
-    Transazione *pU;
 };
 
 #endif // PRELIEVO_H
