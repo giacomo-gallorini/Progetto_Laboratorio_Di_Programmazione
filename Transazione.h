@@ -12,9 +12,11 @@ class Transazione{
 public:
     enum class tipoTransazione{
         USCITA,
-        ENTRATA
+        ENTRATA,
+        TRANSAZIONE_VUOTA
     };
     Transazione(float valore_transazione,string motivazione,QDate data,tipoTransazione t);
+    ~Transazione();
 
     string getMotivazione();
     void setMotivazione(string nuovaMotivazione);
