@@ -12,6 +12,8 @@ Transazione::Transazione(float valore_transazione, string motivazione, QDate dat
         this->valore_transazione = valore_transazione;
 }
 
+Transazione::~Transazione(){}
+
 string Transazione::getMotivazione(){
     return motivazione;
 }
@@ -44,5 +46,4 @@ void Transazione::setId(unsigned int i){
     if(id == 0)
         id = i;
 }
-
 
