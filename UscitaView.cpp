@@ -23,7 +23,6 @@ UscitaView::UscitaView(Conto *c,QWidget *parent) :
 }
 
 UscitaView::~UscitaView(){
-    delete pU;
     delete ui;
 }
 
@@ -35,7 +34,7 @@ void UscitaView::on_pushButton_clicked(){
     if(conto->calcolaSaldo()>=prel){
         string m=ui->comboBox->currentText().toStdString();
 
-        pU=new Transazione(prel,m,ui->dateEdit->date(),Transazione::tipoTransazione::USCITA);
+        Transazione pU(prel,m,ui->dateEdit->date(),Transazione::tipoTransazione::USCITA);
         conto->aggiungiTransazione(pU);
 
         float saldoAttuale=conto->calcolaSaldo();
@@ -44,7 +43,7 @@ void UscitaView::on_pushButton_clicked(){
         writeOnly_on_file(saldoAttuale);
 
         // Aggiungo le info relative all'ultima transazione effettuata(prelievo,saldo aggiornato,data)
-        readWrite_on_file(x,pU->getId());
+        readWrite_on_file(x,pU.getId());
 
         box.setText("Prelievo avvenuto con successo");
         box.setWindowTitle(" ");
