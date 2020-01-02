@@ -24,7 +24,6 @@ EntrataView::EntrataView(Conto *c,QWidget *parent) :
 }
 
 EntrataView::~EntrataView(){
-    delete pE;
     delete ui;
 }
 
@@ -34,7 +33,7 @@ void EntrataView::on_pushButton_clicked(){
     double prel=x.toDouble();
     string m=ui->comboBox->currentText().toStdString();
 
-    pE=new Transazione(prel,m,ui->dateEdit->date(),Transazione::tipoTransazione::ENTRATA);
+    Transazione pE(prel,m,ui->dateEdit->date(),Transazione::tipoTransazione::ENTRATA);
     conto->aggiungiTransazione(pE);
 
     float saldoAttuale=conto->calcolaSaldo();
@@ -45,7 +44,7 @@ void EntrataView::on_pushButton_clicked(){
 
     // Aggiungo le info relative all'ultima transazione effettuata(prelievo,saldo aggiornato,data)
 
-    readWrite_on_file(x,pE->getId());
+    readWrite_on_file(x,pE.getId());
 
     box.setText("Ricarica avvenuta con successo");
     box.setWindowTitle(" ");
