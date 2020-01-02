@@ -13,9 +13,9 @@ ContoView::ContoView(Conto *c,QWidget *parent) :
     ui(new Ui::ContoView)
 {
     ui->setupUi(this);
-    conto=c;
+    conto = c;
 
-    QString text=QString::number(conto->calcolaSaldo());
+    QString text = QString::number(conto->calcolaSaldo());
     ui->label->setText("Saldo attuale: €"+text);
     ui->plainTextEdit->setReadOnly(true);
     ui->plainTextEdit->setPlainText(readOnly_on_file());
@@ -46,16 +46,16 @@ QString ContoView::readOnly_on_file(){
                 QMessageBox::warning(this,"title","file not open");
             }
             QTextStream in2(&file1);
-            QString text1=in2.readAll();
+            QString text1 = in2.readAll();
             return text1;
 }
 
 void ContoView::on_comboBox_currentIndexChanged(const QString &arg1){
     string c=arg1.toStdString();
-    if(c=="Tutte le transazioni")
+    if(c == "Tutte le transazioni")
         ui->plainTextEdit->setPlainText(conto->stampaTransazioni(conto->getTransazioni()));
     else{
-    vector<Transazione *> v=conto->filtraTransazioni(c);
+    vector<Transazione> v = conto->filtraTransazioni(c);
     ui->plainTextEdit->setPlainText(conto->stampaTransazioni(v));
     }
 }
@@ -65,7 +65,7 @@ void ContoView::on_pushButton_2_clicked(){
     box.setWindowTitle("Avviso");
     QString x = ui->lineEdit->text();
     int id = x.toInt();
-    bool cancellazioneEffettuata=conto->eliminaTransazione(id);
+    bool cancellazioneEffettuata = conto->eliminaTransazione(id);
     if(cancellazioneEffettuata == true){
         QString text=QString::number(conto->calcolaSaldo());
         ui->label->setText("Saldo attuale: €"+text);
